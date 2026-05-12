@@ -805,6 +805,113 @@
         padding: 9px 10px;
       }
     }
+    .phone-wrapper {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.country-code-box {
+  position: relative;
+}
+
+#countryCodeSearch {
+  width: 100%;
+  padding-inline-start: 14px;
+  padding-inline-end: 14px;
+  font-size: 14px;
+}
+
+.selected-country {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(0, 168, 143, 0.10);
+  border: 1px solid rgba(0, 168, 143, 0.22);
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.selected-country .flag {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.selected-country .dial-code {
+  font-size: 13px;
+}
+
+.country-dropdown {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  max-height: 240px;
+  overflow-y: auto;
+  display: none;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card-solid);
+  box-shadow: var(--shadow);
+  padding: 8px;
+}
+
+body[dir="rtl"] .country-dropdown {
+  left: 0;
+  right: 0;
+}
+
+.country-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  transition: 0.2s ease;
+}
+
+.country-option:hover {
+  background: rgba(0, 168, 143, 0.10);
+}
+
+.country-option .flag {
+  font-size: 15px;
+}
+
+.country-option .country-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.country-option .dial-code {
+  font-weight: 900;
+  color: var(--primary-dark);
+}
+
+[data-theme="dark"] .country-option .dial-code {
+  color: var(--primary);
+}
+
+@media (max-width: 620px) {
+  .phone-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .country-dropdown {
+    top: 54px;
+  }
+}
   </style>
 </head>
 
@@ -903,13 +1010,45 @@
                 <div class="error" data-i18n="errorEmail">Please enter a valid email address.</div>
               </div>
 
-              <div class="field" data-field="mobile">
-                <label for="mobile"><span data-i18n="mobile">Mobile Number</span> <span class="required">*</span></label>
-                <input id="mobile" name="mobile" type="tel" placeholder="+962 7X XXX XXXX" autocomplete="tel" />
-                <div class="hint" data-i18n="mobileHint">Use international format, for example +962.</div>
-                <div class="error" data-i18n="errorMobile">Please enter a valid international mobile number.</div>
-              </div>
+<div class="field" data-field="mobile">
+  <label for="mobile">
+    <span data-i18n="mobile">Mobile Number</span> <span class="required">*</span>
+  </label>
 
+  <div class="phone-wrapper">
+    <div class="country-code-box">
+      <input 
+        id="countryCodeSearch" 
+        type="text" 
+        placeholder="Search country..." 
+        autocomplete="off"
+      />
+
+      <div id="selectedCountry" class="selected-country">
+        <span class="flag">🇯🇴</span>
+        <span class="dial-code">+962</span>
+      </div>
+
+      <div id="countryDropdown" class="country-dropdown"></div>
+    </div>
+
+    <input 
+      id="mobile" 
+      name="mobile" 
+      type="tel" 
+      placeholder="7900000000" 
+      autocomplete="tel"
+    />
+  </div>
+
+  <div class="hint">
+    Select country code, then enter the mobile number without spaces.
+  </div>
+
+  <div class="error" data-i18n="errorMobile">
+    Please enter a valid mobile number with more than 9 digits and no spaces.
+  </div>
+</div>
               <div class="field full" data-field="productName">
                 <label for="productName"><span data-i18n="productName">Product Name</span> <span class="required">*</span></label>
                 <input id="productName" name="productName" type="text" placeholder="Write product name manually" />
@@ -1351,7 +1490,86 @@
 
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+const countries = [
+  { name: "Jordan", code: "+962", flag: "🇯🇴" },
+  { name: "Saudi Arabia", code: "+966", flag: "🇸🇦" },
+  { name: "United Arab Emirates", code: "+971", flag: "🇦🇪" },
+  { name: "Iraq", code: "+964", flag: "🇮🇶" },
+  { name: "Qatar", code: "+974", flag: "🇶🇦" },
+  { name: "Kuwait", code: "+965", flag: "🇰🇼" },
+  { name: "Bahrain", code: "+973", flag: "🇧🇭" },
+  { name: "Oman", code: "+968", flag: "🇴🇲" },
+  { name: "Lebanon", code: "+961", flag: "🇱🇧" },
+  { name: "Palestine", code: "+970", flag: "🇵🇸" },
+  { name: "Egypt", code: "+20", flag: "🇪🇬" },
+  { name: "Turkey", code: "+90", flag: "🇹🇷" },
+  { name: "United Kingdom", code: "+44", flag: "🇬🇧" },
+  { name: "United States", code: "+1", flag: "🇺🇸" },
+  { name: "Germany", code: "+49", flag: "🇩🇪" },
+  { name: "France", code: "+33", flag: "🇫🇷" },
+  { name: "Italy", code: "+39", flag: "🇮🇹" },
+  { name: "Spain", code: "+34", flag: "🇪🇸" }
+];
 
+let selectedCountryCode = "+962";
+let selectedCountryFlag = "🇯🇴";
+
+function renderCountryDropdown(searchValue = "") {
+  const dropdown = $("#countryDropdown");
+  const query = searchValue.toLowerCase().trim();
+
+  const filteredCountries = countries.filter((country) =>
+    country.name.toLowerCase().includes(query) ||
+    country.code.includes(query)
+  );
+
+  dropdown.innerHTML = filteredCountries.map((country) => `
+    <div class="country-option" data-code="${country.code}" data-flag="${country.flag}" data-name="${country.name}">
+      <span class="flag">${country.flag}</span>
+      <span class="country-name">${country.name}</span>
+      <span class="dial-code">${country.code}</span>
+    </div>
+  `).join("");
+
+  dropdown.style.display = filteredCountries.length ? "block" : "none";
+
+  document.querySelectorAll(".country-option").forEach((option) => {
+    option.addEventListener("click", () => {
+      selectedCountryCode = option.dataset.code;
+      selectedCountryFlag = option.dataset.flag;
+
+      $("#selectedCountry").innerHTML = `
+        <span class="flag">${selectedCountryFlag}</span>
+        <span class="dial-code">${selectedCountryCode}</span>
+      `;
+
+      $("#countryCodeSearch").value = option.dataset.name;
+      dropdown.style.display = "none";
+      autoSaveDraft();
+    });
+  });
+}
+
+function setupCountrySearch() {
+  const searchInput = $("#countryCodeSearch");
+  const dropdown = $("#countryDropdown");
+
+  searchInput.value = "Jordan";
+
+  searchInput.addEventListener("focus", () => {
+    renderCountryDropdown(searchInput.value);
+  });
+
+  searchInput.addEventListener("input", () => {
+    renderCountryDropdown(searchInput.value);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".country-code-box")) {
+      dropdown.style.display = "none";
+    }
+  });
+}
     function setTheme(theme) {
       currentTheme = theme;
       document.body.setAttribute("data-theme", theme);
@@ -1415,8 +1633,13 @@ function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 function validateMobile(mobile) {
-  const clean = mobile.replace(/[\s()-]/g, "");
-  return /^\+[1-9]\d{7,14}$/.test(clean);
+  const value = String(mobile || "").trim();
+
+  if (/\s/.test(value)) return false;
+
+  const digitsOnly = value.replace(/\D/g, "");
+
+  return digitsOnly.length > 9;
 }
     function classifyPriority(description, inquiryType) {
       const text = `${description} ${inquiryType}`.toLowerCase();
@@ -1448,18 +1671,23 @@ function validateMobile(mobile) {
       return "Standard";
     }
 
-    function getFormData() {
-      return {
-        inquiryType: normalizeText($("#inquiryType").value),
-        country: normalizeText($("#country").value),
-        email: normalizeText($("#email").value),
-        mobile: normalizeText($("#mobile").value),
-        productName: normalizeText($("#productName").value),
-        inquiryDescription: normalizeText($("#inquiryDescription").value),
-        consentAccepted: $("#consentAccepted").checked
-      };
-    }
+function getFormData() {
+  const mobileRaw = normalizeText($("#mobile").value);
+  const mobileWithoutSpaces = mobileRaw.replace(/\s/g, "");
 
+  return {
+    inquiryType: normalizeText($("#inquiryType").value),
+    country: normalizeText($("#country").value),
+    email: normalizeText($("#email").value),
+    mobile: `${selectedCountryCode}${mobileWithoutSpaces}`,
+    mobileLocalNumber: mobileWithoutSpaces,
+    mobileCountryCode: selectedCountryCode,
+    mobileCountryFlag: selectedCountryFlag,
+    productName: normalizeText($("#productName").value),
+    inquiryDescription: normalizeText($("#inquiryDescription").value),
+    consentAccepted: $("#consentAccepted").checked
+  };
+}
     function setFieldInvalid(fieldName, invalid) {
       const wrapper = document.querySelector(`[data-field="${fieldName}"]`);
       if (!wrapper) return;
@@ -1471,7 +1699,7 @@ function validateMobile(mobile) {
         inquiryType: !data.inquiryType,
         country: data.country.length < 2,
         email: !validateEmail(data.email),
-        mobile: !validateMobile(data.mobile),
+mobile: !validateMobile(data.mobileLocalNumber),
         productName: data.productName.length < 2,
         inquiryDescription: data.inquiryDescription.length < 20,
         consentAccepted: !data.consentAccepted
@@ -1552,7 +1780,7 @@ function validateMobile(mobile) {
         $("#inquiryType").value = draft.inquiryType || "";
         $("#country").value = draft.country || "";
         $("#email").value = draft.email || "";
-        $("#mobile").value = draft.mobile || "";
+$("#mobile").value = draft.mobileLocalNumber || draft.mobile || "";
         $("#productName").value = draft.productName || "";
         $("#inquiryDescription").value = draft.inquiryDescription || "";
         $("#consentAccepted").checked = Boolean(draft.consentAccepted);
@@ -1727,11 +1955,12 @@ function validateMobile(mobile) {
       document.getElementById(id).addEventListener("change", autoSaveDraft);
     });
 
-    setTheme(currentTheme);
-    setLanguage(currentLang);
-    restoreDraft();
-    renderFAQ();
-    renderAdmin();
+setTheme(currentTheme);
+setLanguage(currentLang);
+setupCountrySearch();
+restoreDraft();
+renderFAQ();
+renderAdmin();
   </script>
 </body>
 </html>
