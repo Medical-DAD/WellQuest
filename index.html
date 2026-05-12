@@ -1411,15 +1411,13 @@
       return String(value || "").trim();
     }
 
-    function validateEmail(email) {
-      return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
-    }
-
-    function validateMobile(mobile) {
-      const clean = mobile.replace(/[\\s()-]/g, "");
-      return /^\\+[1-9]\\d{7,14}$/.test(clean);
-    }
-
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+function validateMobile(mobile) {
+  const clean = mobile.replace(/[\s()-]/g, "");
+  return /^\+[1-9]\d{7,14}$/.test(clean);
+}
     function classifyPriority(description, inquiryType) {
       const text = `${description} ${inquiryType}`.toLowerCase();
 
