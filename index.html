@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dar Al Dawa Medical Inquiry Portal</title>
+
+  <meta name="description" content="Professional Medical and Scientific Inquiry Portal for Dar Al Dawa." />
+
+  <style>
+    :root {
+      --bg: #f5f9fb;
+      --bg-secondary: #eef7f8;
+      --card: rgba(255, 255, 255, 0.78);
+      --card-solid: #ffffff;
+      --text: #102027;
+      --muted: #63777f;
+      --primary: #00a88f;
+      --primary-dark: #008c78;
+      --accent: #143c54;
+      --danger: #d64545;
+      --warning: #d88a00;
+      --success: #0f9d75;
+      --border: rgba(20, 60, 84, 0.12);
+      --shadow: 0 24px 80px rgba(20, 60, 84, 0.16);
+      --soft-shadow: 0 12px 36px rgba(20, 60, 84, 0.10);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #07191f;
+      --bg-secondary: #0d2a34;
+      --card: rgba(13, 42, 52, 0.72);
+      --card-solid: #0e2730;
+      --text: #effcff;
+      --muted: #a8c2ca;
+      --primary: #27d4bc;
+      --primary-dark: #00a88f;
+      --accent: #dff9ff;
+      --danger: #ff7a7a;
+      --warning: #ffbd59;
+      --success: #38e0aa;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+      --soft-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(0, 168, 143, 0.20), transparent 34%),
+        radial-gradient(circle at 80% 10%, rgba(20, 60, 84, 0.20), transparent 26%),
+        linear-gradient(135deg, var(--bg), var(--bg-secondary));
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body[dir="rtl"] {
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 50;
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--card);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+    }
+
+    .brand img {
+      width: 118px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-badge {
+      display: none;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0, 168, 143, 0.10);
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    [data-theme="dark"] .brand-badge {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-link {
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      color: var(--muted);
+      transition: 0.25s ease;
+      font-weight: 650;
+    }
+
+    .nav-link:hover {
+      background: rgba(0, 168, 143, 0.10);
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn,
+    .lang-btn {
+      border: 1px solid var(--border);
+      background: var(--card-solid);
+      color: var(--text);
+      border-radius: 999px;
+      min-height: 42px;
+      padding: 0 14px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      box-shadow: 0 6px 18px rgba(20, 60, 84, 0.06);
+    }
+
+    .icon-btn:hover,
+    .lang-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0, 168, 143, 0.45);
+      box-shadow: 0 12px 28px rgba(0, 168, 143, 0.13);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+      padding: 74px 0 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(0, 168, 143, 0.25);
+      border-radius: 999px;
+      background: rgba(0, 168, 143, 0.10);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      margin-bottom: 18px;
+    }
+
+    [data-theme="dark"] .eyebrow {
+      color: var(--primary);
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 5vw, 68px);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+      margin: 0 0 20px;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--muted);
+      margin: 0 0 26px;
+      max-width: 680px;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: 0;
+      min-height: 54px;
+      padding: 0 22px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 900;
+      transition: 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .primary-btn {
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      box-shadow: 0 16px 36px rgba(0, 168, 143, 0.28);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 48px rgba(0, 168, 143, 0.36);
+    }
+
+    .secondary-btn {
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+    }
+
+    .secondary-btn:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0, 168, 143, 0.38);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .hero-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      backdrop-filter: blur(26px);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, rgba(0,168,143,0.20), transparent 70%);
+      top: -80px;
+      right: -80px;
+    }
+
+    body[dir="rtl"] .hero-card::before {
+      right: auto;
+      left: -80px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .metric {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.52);
+      border: 1px solid var(--border);
+    }
+
+    [data-theme="dark"] .metric {
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 25px;
+      letter-spacing: -0.03em;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .section {
+      padding: 42px 0;
+    }
+
+    .section-header {
+      margin-bottom: 22px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(28px, 3vw, 42px);
+      letter-spacing: -0.04em;
+      margin: 0 0 10px;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 760px;
+    }
+
+    .form-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .premium-card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      backdrop-filter: blur(26px);
+      -webkit-backdrop-filter: blur(26px);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 26px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .required {
+      color: var(--danger);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 15px 15px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.22s ease;
+      font-family: inherit;
+    }
+
+    [data-theme="dark"] input,
+    [data-theme="dark"] select,
+    [data-theme="dark"] textarea {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(0, 168, 143, 0.75);
+      box-shadow: 0 0 0 5px rgba(0, 168, 143, 0.12);
+    }
+
+    textarea {
+      min-height: 170px;
+      resize: vertical;
+      line-height: 1.65;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .error {
+      display: none;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.45;
+    }
+
+    .field.invalid input,
+    .field.invalid select,
+    .field.invalid textarea {
+      border-color: rgba(214, 69, 69, 0.82);
+      box-shadow: 0 0 0 5px rgba(214, 69, 69, 0.10);
+    }
+
+    .field.invalid .error {
+      display: block;
+    }
+
+    .consent-box {
+      grid-column: 1 / -1;
+      border: 1px solid var(--border);
+      background: rgba(0, 168, 143, 0.07);
+      border-radius: 18px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .consent-box input {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: var(--primary);
+    }
+
+    .consent-box label {
+      font-weight: 650;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .submit-row {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .submit-btn {
+      border: 0;
+      border-radius: 18px;
+      min-height: 58px;
+      padding: 0 28px;
+      color: #fff;
+      font-weight: 950;
+      font-size: 16px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      box-shadow: 0 18px 42px rgba(0, 168, 143, 0.28);
+      transition: 0.25s ease;
+      min-width: 210px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 54px rgba(0, 168, 143, 0.36);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.72;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mini-card {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--card);
+      backdrop-filter: blur(22px);
+      padding: 20px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .mini-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .mini-card p,
+    .mini-card li {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .mini-card ul {
+      padding-inline-start: 18px;
+      margin: 8px 0 0;
+    }
+
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 34px 22px;
+    }
+
+    .success-icon {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--success), var(--primary));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 44px;
+      box-shadow: 0 18px 44px rgba(15, 157, 117, 0.30);
+      animation: successPop 0.65s ease both;
+    }
+
+    @keyframes successPop {
+      0% { transform: scale(0.6); opacity: 0; }
+      70% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .case-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: rgba(0, 168, 143, 0.10);
+      border: 1px solid rgba(0, 168, 143, 0.22);
+      color: var(--primary-dark);
+      border-radius: 999px;
+      font-weight: 950;
+      margin: 12px 0;
+    }
+
+    [data-theme="dark"] .case-pill {
+      color: var(--primary);
+    }
+
+    .faq-tools {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .faq-tools input {
+      max-width: 460px;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--card);
+      backdrop-filter: blur(20px);
+      padding: 18px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .faq-answer {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    .tracking-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .timeline {
+      display: none;
+      margin-top: 20px;
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+    }
+
+    .timeline-step {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+      color: var(--muted);
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin-top: 4px;
+      box-shadow: 0 0 0 6px rgba(0, 168, 143, 0.12);
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .admin-table-wrap {
+      overflow-x: auto;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+    }
+
+    th,
+    td {
+      padding: 14px;
+      text-align: start;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(0, 168, 143, 0.12);
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    [data-theme="dark"] .status {
+      color: var(--primary);
+    }
+
+    .footer {
+      padding: 42px 0 56px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      max-width: 380px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: var(--card-solid);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 100;
+      color: var(--text);
+      line-height: 1.5;
+      font-weight: 750;
+    }
+
+    body[dir="rtl"] .toast {
+      right: auto;
+      left: 24px;
+    }
+
+    .toast.show {
+      display: block;
+      animation: toastIn 0.35s ease both;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .form-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-inner {
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        flex: 1;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+      }
+
+      .admin-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tracking-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .form-grid,
+      .metric-grid,
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 44px;
+      }
+
+      .premium-card {
+        padding: 20px;
+      }
+
+      .brand img {
+        width: 98px;
+      }
+
+      .nav-link {
+        font-size: 13px;
+        padding: 9px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body data-theme="light">
+  <div class="page-shell">
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="#" class="brand">
+          <img src="https://www.dadgroup.com/wp-content/uploads/2023/11/uplift-dad-website-05.png" alt="Dar Al Dawa Logo" />
+          <span class="brand-badge" data-i18n="brandBadge">Medical Portal</span>
+        </a>
+
+        <div class="nav-links">
+          <a class="nav-link" href="#submit" data-i18n="navSubmit">Submit Inquiry</a>
+          <a class="nav-link" href="#track" data-i18n="navTrack">Track Request</a>
+          <a class="nav-link" href="#faq" data-i18n="navFaq">FAQ</a>
+          <a class="nav-link" href="#admin" data-i18n="navAdmin">Admin Preview</a>
+        </div>
+
+        <div class="actions">
+          <button class="lang-btn" id="languageToggle">العربية</button>
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow" data-i18n="eyebrow">Enterprise Medical Inquiry Platform</div>
+          <h1 data-i18n="heroTitle">Medical & Scientific Inquiry Portal</h1>
+          <p data-i18n="heroSubtitle">
+            A secure, professional, and streamlined channel for healthcare professionals and medical representatives to submit scientific and medical inquiries directly to the Medical Department.
+          </p>
+
+          <div class="hero-cta">
+            <a href="#submit" class="primary-btn" data-i18n="heroCta">Submit a Medical Inquiry</a>
+            <a href="#track" class="secondary-btn" data-i18n="trackCta">Track Existing Request</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="metric-grid">
+            <div class="metric">
+              <strong>10</strong>
+              <span data-i18n="metric1">Business days scientific response target</span>
+            </div>
+            <div class="metric">
+              <strong>24/7</strong>
+              <span data-i18n="metric2">Digital inquiry submission access</span>
+            </div>
+            <div class="metric">
+              <strong>MI</strong>
+              <span data-i18n="metric3">Medical inquiry case tracking</span>
+            </div>
+            <div class="metric">
+              <strong>EN/AR</strong>
+              <span data-i18n="metric4">English and Arabic RTL support</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="submit" class="section">
+        <div class="section-header">
+          <h2 data-i18n="submitTitle">Submit Your Inquiry</h2>
+          <p data-i18n="submitSubtitle">
+            Please provide accurate information to help the Medical Department assess your request and provide a scientifically based response.
+          </p>
+        </div>
+
+        <div class="form-layout">
+          <div class="premium-card">
+            <form id="inquiryForm" class="form-grid" novalidate>
+              <div class="field" data-field="inquiryType">
+                <label for="inquiryType"><span data-i18n="inquiryType">Inquiry Type</span> <span class="required">*</span></label>
+                <select id="inquiryType" name="inquiryType">
+                  <option value="" data-i18n="selectPlaceholder">Select inquiry type</option>
+                  <option value="Clinical Study Data">Clinical Study Data</option>
+                  <option value="Medical Inquiries">Medical Inquiries</option>
+                  <option value="Off-label Information">Off-label Information</option>
+                  <option value="Product Information Requests">Product Information Requests</option>
+                </select>
+                <div class="error" data-i18n="errorInquiryType">Please select an inquiry type.</div>
+              </div>
+
+              <div class="field" data-field="country">
+                <label for="country"><span data-i18n="country">Country</span> <span class="required">*</span></label>
+                <input id="country" name="country" type="text" placeholder="Jordan" autocomplete="country-name" />
+                <div class="error" data-i18n="errorCountry">Country is required.</div>
+              </div>
+
+              <div class="field" data-field="email">
+                <label for="email"><span data-i18n="email">Email Address</span> <span class="required">*</span></label>
+                <input id="email" name="email" type="email" placeholder="name@example.com" autocomplete="email" />
+                <div class="error" data-i18n="errorEmail">Please enter a valid email address.</div>
+              </div>
+
+              <div class="field" data-field="mobile">
+                <label for="mobile"><span data-i18n="mobile">Mobile Number</span> <span class="required">*</span></label>
+                <input id="mobile" name="mobile" type="tel" placeholder="+962 7X XXX XXXX" autocomplete="tel" />
+                <div class="hint" data-i18n="mobileHint">Use international format, for example +962.</div>
+                <div class="error" data-i18n="errorMobile">Please enter a valid international mobile number.</div>
+              </div>
+
+              <div class="field full" data-field="productName">
+                <label for="productName"><span data-i18n="productName">Product Name</span> <span class="required">*</span></label>
+                <input id="productName" name="productName" type="text" placeholder="Write product name manually" />
+                <div class="error" data-i18n="errorProduct">Product name is required.</div>
+              </div>
+
+              <div class="field full" data-field="inquiryDescription">
+                <label for="inquiryDescription"><span data-i18n="description">Inquiry Description</span> <span class="required">*</span></label>
+                <textarea id="inquiryDescription" name="inquiryDescription" maxlength="4000" placeholder="Please describe your inquiry clearly, including clinical context when relevant."></textarea>
+                <div class="hint"><span id="charCount">0</span>/4000</div>
+                <div class="error" data-i18n="errorDescription">Please provide at least 20 characters.</div>
+              </div>
+
+              <div class="consent-box field" data-field="consentAccepted">
+                <input id="consentAccepted" name="consentAccepted" type="checkbox" />
+                <div>
+                  <label for="consentAccepted">
+                    “By selecting submit option you are acknowledging and agreeing processing of your personal data as detailed in this form. Dar Al Dawa will exclusively use this personal data to address your inquiry.”
+                  </label>
+                  <div class="error" data-i18n="errorConsent">Consent is mandatory before submission.</div>
+                </div>
+              </div>
+
+              <div class="submit-row">
+                <div class="hint" id="draftStatus" data-i18n="draftReady">Draft auto-save is active.</div>
+                <button class="submit-btn" id="submitButton" type="submit" data-i18n="submitButton">Submit Inquiry</button>
+              </div>
+            </form>
+
+            <div class="success-state" id="successState">
+              <div class="success-icon">✓</div>
+              <h2 data-i18n="successTitle">Inquiry Submitted Successfully</h2>
+              <div class="case-pill">
+                <span data-i18n="caseIdLabel">Case ID:</span>
+                <span id="successCaseId">DAD-MI-2026-000001</span>
+              </div>
+              <p data-i18n="successMessage">
+                Thank you for contacting the Medical Department. Your request has been sent successfully via email and message.
+              </p>
+              <p class="hint" data-i18n="successHint">A confirmation email has been prepared for the requester, and the Medical Department has been notified.</p>
+              <button class="secondary-btn" type="button" id="submitAnother" data-i18n="submitAnother">Submit Another Inquiry</button>
+            </div>
+          </div>
+
+          <aside class="side-panel">
+            <div class="mini-card">
+              <h3 data-i18n="processTitle">Process Overview</h3>
+              <ul>
+                <li data-i18n="process1">Submit your medical or scientific inquiry.</li>
+                <li data-i18n="process2">Receive confirmation by email.</li>
+                <li data-i18n="process3">Medical Department reviews the request.</li>
+                <li data-i18n="process4">Scientific response targeted within 10 business days.</li>
+              </ul>
+            </div>
+
+            <div class="mini-card">
+              <h3 data-i18n="smartTitle">Smart Routing</h3>
+              <p data-i18n="smartText">
+                The platform can flag potential safety cases, product technical complaints, off-label inquiries, and high-priority requests for internal review.
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h3 data-i18n="privacyTitle">Privacy & Data Use</h3>
+              <p data-i18n="privacyText">
+                Submitted data is intended exclusively to process and address the inquiry through Dar Al Dawa’s Medical Department.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="track" class="section">
+        <div class="section-header">
+          <h2 data-i18n="trackTitle">Track Request</h2>
+          <p data-i18n="trackSubtitle">Enter your case ID and email address to view the current request status.</p>
+        </div>
+
+        <div class="premium-card">
+          <div class="tracking-card">
+            <div class="field">
+              <label for="trackCaseId" data-i18n="trackCaseId">Case ID</label>
+              <input id="trackCaseId" type="text" placeholder="DAD-MI-2026-000001" />
+            </div>
+            <div class="field">
+              <label for="trackEmail" data-i18n="trackEmail">Email Address</label>
+              <input id="trackEmail" type="email" placeholder="name@example.com" />
+            </div>
+            <button class="primary-btn" id="trackButton" type="button" data-i18n="trackButton">Track</button>
+          </div>
+
+          <div class="timeline" id="timeline">
+            <div class="timeline-step">
+              <div class="dot"></div>
+              <div>
+                <strong data-i18n="tlReceived">Received</strong>
+                <div class="hint" data-i18n="tlReceivedText">Your inquiry has been received and logged.</div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="dot"></div>
+              <div>
+                <strong data-i18n="tlReview">Under Review</strong>
+                <div class="hint" data-i18n="tlReviewText">The Medical Department is reviewing your request.</div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="dot"></div>
+              <div>
+                <strong data-i18n="tlResponse">Response Preparation</strong>
+                <div class="hint" data-i18n="tlResponseText">Scientific response preparation is pending or ongoing.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="section">
+        <div class="section-header">
+          <h2 data-i18n="faqTitle">Frequently Asked Questions</h2>
+          <p data-i18n="faqSubtitle">Search the FAQ for process, privacy, response timeline, and inquiry-related information.</p>
+        </div>
+
+        <div class="faq-tools">
+          <input id="faqSearch" type="text" placeholder="Search FAQ..." />
+        </div>
+
+        <div class="faq-list" id="faqList"></div>
+      </section>
+
+      <section id="admin" class="section">
+        <div class="section-header">
+          <h2 data-i18n="adminTitle">Admin Dashboard Preview</h2>
+          <p data-i18n="adminSubtitle">
+            This preview shows how the Medical Department can monitor incoming inquiries, response status, and operational metrics.
+          </p>
+        </div>
+
+        <div class="admin-grid">
+          <div class="mini-card">
+            <h3 id="metricTotal">0</h3>
+            <p data-i18n="adminMetric1">Total inquiries</p>
+          </div>
+          <div class="mini-card">
+            <h3 id="metricPending">0</h3>
+            <p data-i18n="adminMetric2">Pending review</p>
+          </div>
+          <div class="mini-card">
+            <h3 id="metricHigh">0</h3>
+            <p data-i18n="adminMetric3">High priority</p>
+          </div>
+          <div class="mini-card">
+            <h3>10</h3>
+            <p data-i18n="adminMetric4">Business day SLA</p>
+          </div>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-i18n="thCase">Case ID</th>
+                <th data-i18n="thType">Type</th>
+                <th data-i18n="thProduct">Product</th>
+                <th data-i18n="thCountry">Country</th>
+                <th data-i18n="thEmail">Requester</th>
+                <th data-i18n="thPriority">Priority</th>
+                <th data-i18n="thStatus">Status</th>
+              </tr>
+            </thead>
+            <tbody id="adminRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div data-i18n="footerText">
+        Dar Al Dawa Medical Inquiry Portal. This platform is designed for medical and scientific inquiry management.
+      </div>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    /*
+      ============================================================
+      FIREBASE CONFIGURATION
+      ============================================================
+
+      1. Create a Firebase project.
+      2. Enable Firestore.
+      3. Add a Web App.
+      4. Replace the firebaseConfig values below.
+      5. Optional but recommended:
+         - Enable Firebase App Check
+         - Add Firebase Authentication for admin dashboard
+         - Install Firebase Trigger Email Extension
+         - Configure SMTP provider
+         - Create emailQueue collection for outgoing emails
+
+      Without Firebase config, this file still works locally using localStorage.
+    */
+
+    const firebaseConfig = {
+      apiKey: "REPLACE_WITH_FIREBASE_API_KEY",
+      authDomain: "REPLACE_WITH_PROJECT.firebaseapp.com",
+      projectId: "REPLACE_WITH_PROJECT_ID",
+      storageBucket: "REPLACE_WITH_PROJECT.appspot.com",
+      messagingSenderId: "REPLACE_WITH_SENDER_ID",
+      appId: "REPLACE_WITH_APP_ID"
+    };
+
+    let firebaseEnabled = false;
+    let db = null;
+
+    async function initFirebase() {
+      const isConfigured =
+        firebaseConfig.apiKey &&
+        !firebaseConfig.apiKey.includes("REPLACE") &&
+        firebaseConfig.projectId &&
+        !firebaseConfig.projectId.includes("REPLACE");
+
+      if (!isConfigured) return;
+
+      try {
+        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
+        const { getFirestore } = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        firebaseEnabled = true;
+      } catch (error) {
+        console.warn("Firebase initialization failed. Running in local mode.", error);
+      }
+    }
+
+    await initFirebase();
+
+    const translations = {
+      en: {
+        brandBadge: "Medical Portal",
+        navSubmit: "Submit Inquiry",
+        navTrack: "Track Request",
+        navFaq: "FAQ",
+        navAdmin: "Admin Preview",
+        eyebrow: "Enterprise Medical Inquiry Platform",
+        heroTitle: "Medical & Scientific Inquiry Portal",
+        heroSubtitle: "A secure, professional, and streamlined channel for healthcare professionals and medical representatives to submit scientific and medical inquiries directly to the Medical Department.",
+        heroCta: "Submit a Medical Inquiry",
+        trackCta: "Track Existing Request",
+        metric1: "Business days scientific response target",
+        metric2: "Digital inquiry submission access",
+        metric3: "Medical inquiry case tracking",
+        metric4: "English and Arabic RTL support",
+        submitTitle: "Submit Your Inquiry",
+        submitSubtitle: "Please provide accurate information to help the Medical Department assess your request and provide a scientifically based response.",
+        inquiryType: "Inquiry Type",
+        selectPlaceholder: "Select inquiry type",
+        country: "Country",
+        email: "Email Address",
+        mobile: "Mobile Number",
+        mobileHint: "Use international format, for example +962.",
+        productName: "Product Name",
+        description: "Inquiry Description",
+        draftReady: "Draft auto-save is active.",
+        submitButton: "Submit Inquiry",
+        errorInquiryType: "Please select an inquiry type.",
+        errorCountry: "Country is required.",
+        errorEmail: "Please enter a valid email address.",
+        errorMobile: "Please enter a valid international mobile number.",
+        errorProduct: "Product name is required.",
+        errorDescription: "Please provide at least 20 characters.",
+        errorConsent: "Consent is mandatory before submission.",
+        successTitle: "Inquiry Submitted Successfully",
+        caseIdLabel: "Case ID:",
+        successMessage: "Thank you for contacting the Medical Department. Your request has been sent successfully via email and message.",
+        successHint: "A confirmation email has been prepared for the requester, and the Medical Department has been notified.",
+        submitAnother: "Submit Another Inquiry",
+        processTitle: "Process Overview",
+        process1: "Submit your medical or scientific inquiry.",
+        process2: "Receive confirmation by email.",
+        process3: "Medical Department reviews the request.",
+        process4: "Scientific response targeted within 10 business days.",
+        smartTitle: "Smart Routing",
+        smartText: "The platform can flag potential safety cases, product technical complaints, off-label inquiries, and high-priority requests for internal review.",
+        privacyTitle: "Privacy & Data Use",
+        privacyText: "Submitted data is intended exclusively to process and address the inquiry through Dar Al Dawa’s Medical Department.",
+        trackTitle: "Track Request",
+        trackSubtitle: "Enter your case ID and email address to view the current request status.",
+        trackCaseId: "Case ID",
+        trackEmail: "Email Address",
+        trackButton: "Track",
+        tlReceived: "Received",
+        tlReceivedText: "Your inquiry has been received and logged.",
+        tlReview: "Under Review",
+        tlReviewText: "The Medical Department is reviewing your request.",
+        tlResponse: "Response Preparation",
+        tlResponseText: "Scientific response preparation is pending or ongoing.",
+        faqTitle: "Frequently Asked Questions",
+        faqSubtitle: "Search the FAQ for process, privacy, response timeline, and inquiry-related information.",
+        adminTitle: "Admin Dashboard Preview",
+        adminSubtitle: "This preview shows how the Medical Department can monitor incoming inquiries, response status, and operational metrics.",
+        adminMetric1: "Total inquiries",
+        adminMetric2: "Pending review",
+        adminMetric3: "High priority",
+        adminMetric4: "Business day SLA",
+        thCase: "Case ID",
+        thType: "Type",
+        thProduct: "Product",
+        thCountry: "Country",
+        thEmail: "Requester",
+        thPriority: "Priority",
+        thStatus: "Status",
+        footerText: "Dar Al Dawa Medical Inquiry Portal. This platform is designed for medical and scientific inquiry management.",
+        toastDraftSaved: "Draft saved.",
+        toastValidation: "Please review the highlighted fields.",
+        toastTracked: "Request status loaded.",
+        toastNotFound: "No matching local request found. If Firebase is connected, implement secure lookup through Cloud Functions."
+      },
+      ar: {
+        brandBadge: "بوابة طبية",
+        navSubmit: "تقديم استفسار",
+        navTrack: "تتبع الطلب",
+        navFaq: "الأسئلة الشائعة",
+        navAdmin: "معاينة الإدارة",
+        eyebrow: "منصة مؤسسية للاستفسارات الطبية",
+        heroTitle: "بوابة الاستفسارات الطبية والعلمية",
+        heroSubtitle: "قناة آمنة واحترافية تتيح لمقدمي الرعاية الصحية والممثلين الطبيين إرسال الاستفسارات العلمية والطبية مباشرة إلى القسم الطبي.",
+        heroCta: "تقديم استفسار طبي",
+        trackCta: "تتبع طلب سابق",
+        metric1: "أيام عمل كهدف للرد العلمي",
+        metric2: "إتاحة رقمية لتقديم الاستفسارات",
+        metric3: "تتبع حالات الاستفسارات الطبية",
+        metric4: "دعم اللغة الإنجليزية والعربية",
+        submitTitle: "تقديم الاستفسار",
+        submitSubtitle: "يرجى تزويدنا بمعلومات دقيقة لمساعدة القسم الطبي على تقييم طلبك وتقديم رد علمي مناسب.",
+        inquiryType: "نوع الاستفسار",
+        selectPlaceholder: "اختر نوع الاستفسار",
+        country: "الدولة",
+        email: "البريد الإلكتروني",
+        mobile: "رقم الهاتف",
+        mobileHint: "استخدم الصيغة الدولية، مثال +962.",
+        productName: "اسم المنتج",
+        description: "وصف الاستفسار",
+        draftReady: "الحفظ التلقائي للمسودة مفعل.",
+        submitButton: "إرسال الاستفسار",
+        errorInquiryType: "يرجى اختيار نوع الاستفسار.",
+        errorCountry: "الدولة مطلوبة.",
+        errorEmail: "يرجى إدخال بريد إلكتروني صحيح.",
+        errorMobile: "يرجى إدخال رقم هاتف دولي صحيح.",
+        errorProduct: "اسم المنتج مطلوب.",
+        errorDescription: "يرجى كتابة 20 حرفًا على الأقل.",
+        errorConsent: "الموافقة إلزامية قبل الإرسال.",
+        successTitle: "تم إرسال الاستفسار بنجاح",
+        caseIdLabel: "رقم الحالة:",
+        successMessage: "Thank you for contacting the Medical Department. Your request has been sent successfully via email and message.",
+        successHint: "تم تجهيز رسالة تأكيد لمقدم الطلب وتم إشعار القسم الطبي.",
+        submitAnother: "تقديم استفسار آخر",
+        processTitle: "نظرة عامة على العملية",
+        process1: "قم بتقديم استفسارك الطبي أو العلمي.",
+        process2: "استلام تأكيد عبر البريد الإلكتروني.",
+        process3: "يقوم القسم الطبي بمراجعة الطلب.",
+        process4: "الرد العلمي مستهدف خلال 10 أيام عمل.",
+        smartTitle: "التوجيه الذكي",
+        smartText: "يمكن للمنصة تمييز حالات السلامة المحتملة، الشكاوى الفنية على المنتج، الاستفسارات خارج النشرة، والطلبات ذات الأولوية العالية.",
+        privacyTitle: "الخصوصية واستخدام البيانات",
+        privacyText: "تستخدم البيانات المقدمة حصريًا لمعالجة الاستفسار من خلال القسم الطبي في دار الدواء.",
+        trackTitle: "تتبع الطلب",
+        trackSubtitle: "أدخل رقم الحالة والبريد الإلكتروني لمعرفة حالة الطلب الحالية.",
+        trackCaseId: "رقم الحالة",
+        trackEmail: "البريد الإلكتروني",
+        trackButton: "تتبع",
+        tlReceived: "تم الاستلام",
+        tlReceivedText: "تم استلام الاستفسار وتسجيله.",
+        tlReview: "قيد المراجعة",
+        tlReviewText: "يقوم القسم الطبي بمراجعة الطلب.",
+        tlResponse: "تحضير الرد",
+        tlResponseText: "تحضير الرد العلمي قيد الانتظار أو التنفيذ.",
+        faqTitle: "الأسئلة الشائعة",
+        faqSubtitle: "ابحث في الأسئلة الشائعة حول العملية والخصوصية ومدة الرد.",
+        adminTitle: "معاينة لوحة الإدارة",
+        adminSubtitle: "تعرض هذه المعاينة كيفية متابعة القسم الطبي للاستفسارات الواردة وحالة الرد والمؤشرات التشغيلية.",
+        adminMetric1: "إجمالي الاستفسارات",
+        adminMetric2: "بانتظار المراجعة",
+        adminMetric3: "أولوية عالية",
+        adminMetric4: "أيام عمل للرد",
+        thCase: "رقم الحالة",
+        thType: "النوع",
+        thProduct: "المنتج",
+        thCountry: "الدولة",
+        thEmail: "مقدم الطلب",
+        thPriority: "الأولوية",
+        thStatus: "الحالة",
+        footerText: "بوابة الاستفسارات الطبية لدار الدواء. تم تصميم هذه المنصة لإدارة الاستفسارات الطبية والعلمية.",
+        toastDraftSaved: "تم حفظ المسودة.",
+        toastValidation: "يرجى مراجعة الحقول المحددة.",
+        toastTracked: "تم تحميل حالة الطلب.",
+        toastNotFound: "لم يتم العثور على طلب مطابق محليًا. عند ربط Firebase، يجب تنفيذ البحث الآمن عبر Cloud Functions."
+      }
+    };
+
+    const faqData = [
+      {
+        enQ: "What types of inquiries can I submit?",
+        enA: "You can submit clinical study data requests, medical inquiries, off-label information requests, and product information requests.",
+        arQ: "ما أنواع الاستفسارات التي يمكن تقديمها؟",
+        arA: "يمكنك تقديم طلبات بيانات الدراسات السريرية، الاستفسارات الطبية، طلبات المعلومات خارج النشرة، وطلبات معلومات المنتجات."
+      },
+      {
+        enQ: "When should I expect a response?",
+        enA: "Dar Aldawa is committed to providing a scientifically based response within 10 business days.",
+        arQ: "متى أتوقع الحصول على رد؟",
+        arA: "تلتزم دار الدواء بتقديم رد علمي خلال 10 أيام عمل."
+      },
+      {
+        enQ: "How is my personal data used?",
+        enA: "Your personal data will be used exclusively to address your inquiry through the Medical Department.",
+        arQ: "كيف يتم استخدام بياناتي الشخصية؟",
+        arA: "تستخدم بياناتك الشخصية حصريًا لمعالجة استفسارك من خلال القسم الطبي."
+      },
+      {
+        enQ: "Can I track my request?",
+        enA: "Yes. After submission, you will receive a case ID that can be used to track the request status.",
+        arQ: "هل يمكنني تتبع الطلب؟",
+        arA: "نعم. بعد الإرسال، ستحصل على رقم حالة يمكن استخدامه لتتبع حالة الطلب."
+      },
+      {
+        enQ: "What happens if my inquiry includes a safety case?",
+        enA: "The system can flag possible safety cases or product technical complaints for internal review according to company procedures.",
+        arQ: "ماذا يحدث إذا تضمن الاستفسار حالة سلامة؟",
+        arA: "يمكن للنظام تمييز حالات السلامة المحتملة أو الشكاوى الفنية على المنتج للمراجعة الداخلية حسب إجراءات الشركة."
+      }
+    ];
+
+    let currentLang = localStorage.getItem("dad_lang") || "en";
+    let currentTheme = localStorage.getItem("dad_theme") || "light";
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      document.body.setAttribute("data-theme", theme);
+      $("#themeToggle").textContent = theme === "dark" ? "☀️" : "🌙";
+      localStorage.setItem("dad_theme", theme);
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.body.dir = lang === "ar" ? "rtl" : "ltr";
+      $("#languageToggle").textContent = lang === "en" ? "العربية" : "English";
+      localStorage.setItem("dad_lang", lang);
+
+      $$("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      $("#faqSearch").placeholder = lang === "en" ? "Search FAQ..." : "ابحث في الأسئلة الشائعة...";
+      renderFAQ();
+      renderAdmin();
+    }
+
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3500);
+    }
+
+    function generateCaseId() {
+      const year = new Date().getFullYear();
+      const stored = Number(localStorage.getItem("dad_case_counter") || "0") + 1;
+      localStorage.setItem("dad_case_counter", String(stored));
+      return `DAD-MI-${year}-${String(stored).padStart(6, "0")}`;
+    }
+
+    function getLocalInquiries() {
+      try {
+        return JSON.parse(localStorage.getItem("dad_inquiries") || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveLocalInquiry(inquiry) {
+      const inquiries = getLocalInquiries();
+      inquiries.unshift(inquiry);
+      localStorage.setItem("dad_inquiries", JSON.stringify(inquiries));
+    }
+
+    function normalizeText(value) {
+      return String(value || "").trim();
+    }
+
+    function validateEmail(email) {
+      return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+    }
+
+    function validateMobile(mobile) {
+      const clean = mobile.replace(/[\\s()-]/g, "");
+      return /^\\+[1-9]\\d{7,14}$/.test(clean);
+    }
+
+    function classifyPriority(description, inquiryType) {
+      const text = `${description} ${inquiryType}`.toLowerCase();
+
+      const safetyKeywords = [
+        "adverse event",
+        "side effect",
+        "serious reaction",
+        "pregnancy exposure",
+        "overdose",
+        "death",
+        "hospitalization",
+        "product complaint",
+        "quality complaint",
+        "contamination",
+        "wrong dose"
+      ];
+
+      const offLabelKeywords = [
+        "off-label",
+        "off label",
+        "outside indication",
+        "unapproved use"
+      ];
+
+      if (safetyKeywords.some((word) => text.includes(word))) return "Compliance Sensitive";
+      if (offLabelKeywords.some((word) => text.includes(word))) return "High Priority";
+      if (inquiryType === "Off-label Information") return "High Priority";
+      return "Standard";
+    }
+
+    function getFormData() {
+      return {
+        inquiryType: normalizeText($("#inquiryType").value),
+        country: normalizeText($("#country").value),
+        email: normalizeText($("#email").value),
+        mobile: normalizeText($("#mobile").value),
+        productName: normalizeText($("#productName").value),
+        inquiryDescription: normalizeText($("#inquiryDescription").value),
+        consentAccepted: $("#consentAccepted").checked
+      };
+    }
+
+    function setFieldInvalid(fieldName, invalid) {
+      const wrapper = document.querySelector(`[data-field="${fieldName}"]`);
+      if (!wrapper) return;
+      wrapper.classList.toggle("invalid", invalid);
+    }
+
+    function validateForm(data) {
+      const errors = {
+        inquiryType: !data.inquiryType,
+        country: data.country.length < 2,
+        email: !validateEmail(data.email),
+        mobile: !validateMobile(data.mobile),
+        productName: data.productName.length < 2,
+        inquiryDescription: data.inquiryDescription.length < 20,
+        consentAccepted: !data.consentAccepted
+      };
+
+      Object.entries(errors).forEach(([field, invalid]) => setFieldInvalid(field, invalid));
+      return !Object.values(errors).some(Boolean);
+    }
+
+    async function saveToFirebase(inquiry) {
+      if (!firebaseEnabled || !db) return false;
+
+      try {
+        const {
+          collection,
+          doc,
+          setDoc,
+          serverTimestamp
+        } = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+
+        await setDoc(doc(db, "inquiries", inquiry.caseId), {
+          ...inquiry,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+
+        await setDoc(doc(collection(db, "emailQueue")), {
+          to: inquiry.email,
+          subject: "Your Medical Inquiry Has Been Received",
+          templateType: "requesterConfirmation",
+          relatedCaseId: inquiry.caseId,
+          status: "queued",
+          createdAt: serverTimestamp(),
+          text:
+            "Thank you for contacting Dar Aldawa.\\n\\n" +
+            "We have successfully received your inquiry and are committed to providing you with a scientifically based response within 10 business days. If you have any further details to add or inquiries in the meantime, please do not hesitate to reach out."
+        });
+
+        await setDoc(doc(collection(db, "emailQueue")), {
+          to: "medical.inquiries@dadgroup.com",
+          subject: `New Medical Inquiry Received | ${inquiry.caseId}`,
+          templateType: "internalNotification",
+          relatedCaseId: inquiry.caseId,
+          status: "queued",
+          createdAt: serverTimestamp(),
+          text:
+            `New Inquiry Alert\\n\\n` +
+            `Case ID: ${inquiry.caseId}\\n` +
+            `Inquiry Type: ${inquiry.inquiryType}\\n` +
+            `Product Name: ${inquiry.productName}\\n` +
+            `Country: ${inquiry.country}\\n` +
+            `Requester Email: ${inquiry.email}\\n` +
+            `Requester Mobile: ${inquiry.mobile}\\n` +
+            `Submission Time: ${inquiry.createdAtReadable}\\n` +
+            `Urgency Indicator: ${inquiry.priority}\\n\\n` +
+            `Inquiry Description:\\n${inquiry.inquiryDescription}\\n\\n` +
+            `Recommended Action:\\nPlease review, assign, and respond through the Medical Inquiry Admin Dashboard.`
+        });
+
+        return true;
+      } catch (error) {
+        console.error("Firebase save failed. Local copy will remain available.", error);
+        return false;
+      }
+    }
+
+    function autoSaveDraft() {
+      const data = getFormData();
+      localStorage.setItem("dad_inquiry_draft", JSON.stringify(data));
+      $("#draftStatus").textContent = currentLang === "en" ? "Draft saved automatically." : "تم حفظ المسودة تلقائيًا.";
+    }
+
+    function restoreDraft() {
+      try {
+        const draft = JSON.parse(localStorage.getItem("dad_inquiry_draft") || "{}");
+        if (!draft) return;
+
+        $("#inquiryType").value = draft.inquiryType || "";
+        $("#country").value = draft.country || "";
+        $("#email").value = draft.email || "";
+        $("#mobile").value = draft.mobile || "";
+        $("#productName").value = draft.productName || "";
+        $("#inquiryDescription").value = draft.inquiryDescription || "";
+        $("#consentAccepted").checked = Boolean(draft.consentAccepted);
+        updateCharCount();
+      } catch {}
+    }
+
+    function updateCharCount() {
+      $("#charCount").textContent = String($("#inquiryDescription").value.length);
+    }
+
+    function renderFAQ() {
+      const query = ($("#faqSearch").value || "").toLowerCase().trim();
+      const list = $("#faqList");
+
+      const filtered = faqData.filter((item) => {
+        const q = currentLang === "en" ? item.enQ : item.arQ;
+        const a = currentLang === "en" ? item.enA : item.arA;
+        return `${q} ${a}`.toLowerCase().includes(query);
+      });
+
+      list.innerHTML = filtered.map((item, index) => {
+        const q = currentLang === "en" ? item.enQ : item.arQ;
+        const a = currentLang === "en" ? item.enA : item.arA;
+
+        return `
+          <div class="faq-item ${index === 0 ? "active" : ""}">
+            <div class="faq-question">
+              <span>${q}</span>
+              <span>+</span>
+            </div>
+            <div class="faq-answer">${a}</div>
+          </div>
+        `;
+      }).join("");
+
+      $$(".faq-item").forEach((item) => {
+        item.querySelector(".faq-question").addEventListener("click", () => {
+          item.classList.toggle("active");
+        });
+      });
+    }
+
+    function renderAdmin() {
+      const inquiries = getLocalInquiries();
+
+      $("#metricTotal").textContent = inquiries.length;
+      $("#metricPending").textContent = inquiries.filter((x) => x.status === "Received" || x.status === "Under Review").length;
+      $("#metricHigh").textContent = inquiries.filter((x) => x.priority !== "Standard").length;
+
+      const rows = inquiries.slice(0, 8).map((item) => `
+        <tr>
+          <td><strong>${item.caseId}</strong></td>
+          <td>${item.inquiryType}</td>
+          <td>${item.productName}</td>
+          <td>${item.country}</td>
+          <td>${item.email}</td>
+          <td><span class="status">${item.priority}</span></td>
+          <td><span class="status">${item.status}</span></td>
+        </tr>
+      `).join("");
+
+      $("#adminRows").innerHTML = rows || `
+        <tr>
+          <td colspan="7" style="color: var(--muted);">
+            ${currentLang === "en" ? "No inquiries submitted yet." : "لا توجد استفسارات مرسلة حتى الآن."}
+          </td>
+        </tr>
+      `;
+    }
+
+    function trackLocalRequest() {
+      const caseId = normalizeText($("#trackCaseId").value);
+      const email = normalizeText($("#trackEmail").value).toLowerCase();
+
+      const inquiry = getLocalInquiries().find((item) =>
+        item.caseId.toLowerCase() === caseId.toLowerCase() &&
+        item.email.toLowerCase() === email
+      );
+
+      if (inquiry) {
+        $("#timeline").style.display = "block";
+        showToast(translations[currentLang].toastTracked);
+      } else {
+        $("#timeline").style.display = "none";
+        showToast(translations[currentLang].toastNotFound);
+      }
+    }
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+
+      const data = getFormData();
+      const isValid = validateForm(data);
+
+      if (!isValid) {
+        showToast(translations[currentLang].toastValidation);
+        return;
+      }
+
+      const button = $("#submitButton");
+      const originalText = button.textContent;
+
+      button.disabled = true;
+      button.textContent = currentLang === "en" ? "Sending..." : "جارٍ الإرسال...";
+
+      const now = new Date();
+      const caseId = generateCaseId();
+
+      const inquiry = {
+        caseId,
+        ...data,
+        language: currentLang,
+        status: "Received",
+        priority: classifyPriority(data.inquiryDescription, data.inquiryType),
+        source: "Medical Inquiry Portal",
+        createdAtIso: now.toISOString(),
+        createdAtReadable: now.toLocaleString("en-GB", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        }),
+        consentAcceptedAt: now.toISOString(),
+        emailConfirmationSent: firebaseEnabled ? "queued" : "local-demo",
+        internalNotificationSent: firebaseEnabled ? "queued" : "local-demo",
+        fulfillmentEmailSent: false
+      };
+
+      saveLocalInquiry(inquiry);
+      await saveToFirebase(inquiry);
+
+      localStorage.removeItem("dad_inquiry_draft");
+
+      $("#inquiryForm").style.display = "none";
+      $("#successState").style.display = "block";
+      $("#successCaseId").textContent = caseId;
+
+      renderAdmin();
+
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+
+    $("#themeToggle").addEventListener("click", () => {
+      setTheme(currentTheme === "dark" ? "light" : "dark");
+    });
+
+    $("#languageToggle").addEventListener("click", () => {
+      setLanguage(currentLang === "en" ? "ar" : "en");
+    });
+
+    $("#inquiryForm").addEventListener("submit", handleSubmit);
+
+    $("#submitAnother").addEventListener("click", () => {
+      $("#successState").style.display = "none";
+      $("#inquiryForm").style.display = "grid";
+      $("#inquiryForm").reset();
+      updateCharCount();
+      $$(".field").forEach((field) => field.classList.remove("invalid"));
+    });
+
+    $("#trackButton").addEventListener("click", trackLocalRequest);
+
+    $("#faqSearch").addEventListener("input", renderFAQ);
+
+    $("#inquiryDescription").addEventListener("input", () => {
+      updateCharCount();
+      autoSaveDraft();
+    });
+
+    ["inquiryType", "country", "email", "mobile", "productName", "consentAccepted"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", autoSaveDraft);
+      document.getElementById(id).addEventListener("change", autoSaveDraft);
+    });
+
+    setTheme(currentTheme);
+    setLanguage(currentLang);
+    restoreDraft();
+    renderFAQ();
+    renderAdmin();
+  </script>
+</body>
+</html>
